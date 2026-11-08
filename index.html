@@ -1,50 +1,339 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#182a36">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>Virtual Range — Stage Builder</title>
-  <link rel="manifest" href="manifest.webmanifest">
-  <style>
-    :root{color-scheme:dark;--bg:#101a22;--panel:#192832;--panel2:#203541;--line:#344955;--text:#e8f0f3;--muted:#9bb0ba;--blue:#48a8d8;--gold:#ffbf59;--green:#69d3a0}
-    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button{color:inherit;cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
-    .top{height:54px;padding:0 16px;display:flex;align-items:center;gap:22px;background:#182a36;border-bottom:1px solid #293e4b}.brand{font-weight:800;letter-spacing:.08em;white-space:nowrap}.brand span{color:#7ac8ec}.nav{display:flex;height:100%;gap:4px}.nav button{background:transparent;border:0;padding:0 15px;color:#bed0d8}.nav button.active{color:#fff;border-bottom:3px solid var(--blue)}.status{margin-left:auto;color:var(--muted);font-size:12px}.bar{min-height:48px;display:flex;align-items:center;gap:7px;padding:7px 12px;background:#1b2c37;border-bottom:1px solid var(--line);overflow:auto}.bar button,.button{border:1px solid #48606d;background:#263b47;border-radius:5px;padding:8px 11px;white-space:nowrap}.bar button.active,.button.primary{background:#176a95;border-color:#3199ca;color:#fff}.bar .spacer{flex:1}.layout{height:calc(100dvh - 102px);min-height:500px;display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:10px;padding:10px}.main,.side{min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden}.main{display:flex;flex-direction:column}.stagehead{height:42px;padding:0 12px;display:flex;align-items:center;gap:9px;border-bottom:1px solid var(--line);font-size:12px;color:var(--muted)}.live{width:8px;height:8px;border-radius:50%;background:#687b84}.live.on{background:var(--green);box-shadow:0 0 10px #69d3a077}.scene-wrap{position:relative;flex:1;min-height:0;background:#30383c;overflow:hidden}.scene{position:absolute;inset:0;width:100%;height:100%;display:block}.grid{position:absolute;inset:0;pointer-events:none;opacity:.22;background:linear-gradient(90deg,transparent 49.8%,#fff 50%,transparent 50.2%),linear-gradient(0deg,transparent 49.8%,#fff 50%,transparent 50.2%)}.scenelabel{position:absolute;top:11px;left:12px;text-transform:uppercase;letter-spacing:.13em;font-size:10px;text-shadow:0 1px 5px #000;color:white;pointer-events:none}.targets{position:absolute;inset:0}.target{position:absolute;transform:translate(-50%,-50%);width:46px;height:68px;touch-action:none;user-select:none;filter:drop-shadow(0 3px 4px #0009);cursor:grab}.target:active{cursor:grabbing}.target svg{width:100%;height:100%;overflow:visible}.target.selected{outline:2px solid var(--gold);outline-offset:4px}.tag{position:absolute;top:-18px;left:50%;transform:translateX(-50%);background:#17384b;padding:2px 5px;border-radius:3px;font-size:10px;white-space:nowrap}.camera-box{position:absolute;right:10px;bottom:10px;width:min(26%,220px);aspect-ratio:4/3;background:#071016;border:1px solid #8da3ad;border-radius:5px;overflow:hidden;display:none}.camera-box.show{display:block}.camera-box video{width:100%;height:100%;object-fit:cover}.camera-caption{position:absolute;left:0;right:0;bottom:0;background:#071016cc;padding:4px;font-size:10px}.foot{height:35px;padding:0 12px;display:flex;align-items:center;gap:16px;border-top:1px solid var(--line);font-size:11px;color:var(--muted)}.foot span:last-child{margin-left:auto}.side{overflow:auto}.side-title{padding:14px 15px;background:#203541;border-bottom:1px solid var(--line);font-weight:700}.panel{padding:14px}.hidden{display:none!important}.field{margin-bottom:13px}.field label{display:block;margin-bottom:5px;color:#aec0c8;font-size:12px}.field input,.field select{width:100%;padding:9px;border-radius:5px;border:1px solid #465d69;background:#101b22;color:var(--text)}.row{display:grid;grid-template-columns:1fr 1fr;gap:9px}.section{color:#7ec9e9;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:10px;margin:17px 0 9px;padding-bottom:7px;border-bottom:1px solid var(--line)}.types{display:grid;grid-template-columns:1fr 1fr;gap:7px}.types button{background:#223743;border:1px solid #405864;border-radius:5px;padding:9px;text-align:left}.types b{display:block;font-size:20px;margin-bottom:3px}.muted{color:var(--muted);font-size:12px;line-height:1.5}.tools{display:flex;gap:6px;flex-wrap:wrap;padding:9px;border-bottom:1px solid var(--line)}.tools button{background:#263b47;border:1px solid #425966;border-radius:5px;padding:7px 9px;font-size:12px}.tools button.active{background:#176a95}.notice{padding:10px;border:1px solid #725d31;background:#3a3120;border-radius:5px;color:#f5d89d;font-size:12px;line-height:1.45;margin:10px 0}.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#e8f0f3;color:#172630;border-radius:6px;padding:10px 15px;z-index:10;box-shadow:0 5px 25px #0008}.modal{position:fixed;inset:0;background:#000a;display:grid;place-items:center;z-index:9;padding:16px}.dialog{width:min(430px,100%);background:#1b2c37;border:1px solid #526b78;border-radius:8px;padding:18px}.dialog h2{font-size:18px;margin:0 0 10px}.dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}.dialog video{width:100%;max-height:42vh;object-fit:contain;background:#05090b}.danger{color:#ffc1a8}.stage-actions{display:flex;gap:7px}
-    @media(max-width:760px){.top{gap:7px;padding:0 9px}.nav button{padding:0 8px;font-size:12px}.status{display:none}.layout{height:auto;min-height:calc(100dvh - 102px);grid-template-columns:1fr;padding:6px;gap:7px}.main{height:min(64vh,560px);min-height:380px}.side{max-height:none}.bar{padding:6px}.panel{padding:12px}.scene-wrap{min-height:0}.camera-box{width:34%}}
-  </style>
-</head>
-<body>
-  <header class="top"><div class="brand">VIRTUAL <span>RANGE</span></div><nav class="nav"><button class="active">Stage Builder</button><button id="quickstart">Quickstart</button><button id="myStages">My Stages</button></nav><div class="status">LOCAL · ON-DEVICE</div></header>
-  <div class="bar" aria-label="Stage actions"><button id="prev">◀</button><button id="next">▶</button><button id="add" class="active">＋ Target</button><button id="delete">− Delete</button><button id="gridBtn">Grid</button><button id="snapBtn" class="active">Snap</button><span class="spacer"></span><button id="cameraBtn">Camera test</button><button id="saveBtn">Save</button><button id="exportBtn">Export</button><button id="startBtn" class="primary">▶ Start</button></div>
-  <div class="layout">
-    <main class="main"><div class="stagehead"><span class="live" id="cameraStatus"></span><span id="stageStatus">STAGE PREVIEW · EDIT MODE</span><span class="spacer"></span><span id="targetCount">0 targets</span></div><div class="scene-wrap" id="sceneWrap"><canvas class="scene" id="scene"></canvas><div class="grid hidden" id="grid"></div><div class="scenelabel" id="sceneLabel">INDOOR RANGE · PREVIEW</div><div class="targets" id="targets"></div><div class="camera-box" id="cameraBox"><video id="video" autoplay playsinline muted></video><span class="camera-caption">Camera preview · test only</span></div></div><div class="foot"><span id="selectedLabel">No target selected</span><span>Drag targets to arrange · use the Camera test to check permission</span><span id="fpsLabel">READY</span></div></main>
-    <aside class="side"><div class="side-title" id="sideTitle">Stage Settings</div><section class="panel" id="stagePanel"><div class="field"><label for="stageName">Stage name</label><input id="stageName" value="New Stage" maxlength="60"></div><div class="field"><label for="background">Range environment</label><select id="background"><option value="indoor">Indoor Range</option><option value="outdoor">Outdoor Range</option><option value="industrial">Industrial Bay</option><option value="winter">Winter Range</option></select></div><div class="row"><div class="field"><label for="prep">Preparation (sec)</label><input id="prep" type="number" min="0" max="60" value="3"></div><div class="field"><label for="expose">Round time (sec)</label><input id="expose" type="number" min="1" max="900" value="30"></div></div><label class="muted"><input id="audio" type="checkbox" checked> Enable audio cues</label><div class="section">Stage information</div><p class="muted">Arrange targets in the preview, then save or export your stage. This first version is a stage builder and visual timer; laser-shot scoring is not enabled.</p><div class="section">Camera / laser feasibility</div><div class="notice">Camera access here is a permission and preview check only. No shots are detected or scored. Validate your exact trainer, projection setup, and iOS behavior before relying on camera input.</div><div class="stage-actions"><button class="button" id="calibrateBtn">Calibration test</button><button class="button" id="stopCameraBtn">Stop camera</button></div><p class="muted">Camera requires HTTPS and a user tap. Keep Safari in the foreground. Camera + screen mirroring is not guaranteed by this page.</p></section>
-      <section class="panel hidden" id="targetPanel"><div class="section">Add target</div><div class="types"><button data-type="paper"><b>♙</b>Silhouette</button><button data-type="bull"><b>◎</b>Bullseye</button><button data-type="steel"><b>●</b>Steel plate</button><button data-type="popper"><b>♟</b>Popper</button></div><div class="section">Target details</div><div class="muted" id="noTarget">Select a target on the stage to edit its properties.</div><div id="details" class="hidden"><div class="field"><label for="targetType">Type</label><select id="targetType"><option value="paper">Silhouette</option><option value="bull">Bullseye</option><option value="steel">Steel plate</option><option value="popper">Popper</option></select></div><div class="row"><div class="field"><label for="distance">Distance (yd)</label><input id="distance" type="number" min="1" value="10"></div><div class="field"><label for="height">Height (ft)</label><input id="height" type="number" min="0" step=".1" value="5"></div></div><div class="row"><div class="field"><label for="presence">Presence (%)</label><input id="presence" type="number" min="0" max="100" value="100"></div><div class="field"><label for="delay">Delay (sec)</label><input id="delay" type="number" min="0" value="0"></div></div><div class="field"><label for="movement">Behavior</label><select id="movement"><option value="static">Static</option><option value="moving">Moving (preview only)</option></select></div></div></section>
-    </aside>
-  </div>
-  <div id="toast" class="toast hidden" role="status"></div><div id="modal" class="modal hidden" role="dialog" aria-modal="true"><div class="dialog"><h2 id="modalTitle">Stage</h2><div id="modalBody"></div><div class="dialog-actions"><button class="button" id="cancel">Close</button><button class="button primary" id="confirm">Continue</button></div></div></div><input id="importFile" type="file" accept="application/json,.json" hidden>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#e9edf0"><title>Virtual Range — Stage Builder</title>
+<style>
+:root{--blue:#236b9a;--blue2:#dcebf5;--line:#c8d0d6;--ink:#202a31;--muted:#65727b;--panel:#f5f7f8;--white:#fff;--orange:#e49b36}*{box-sizing:border-box}body{margin:0;color:var(--ink);background:#dfe4e7;font:14px Arial,Helvetica,sans-serif}.top{height:52px;background:#263b4b;color:#fff;display:flex;align-items:center;padding:0 14px;gap:22px}.logo{font-weight:bold;font-size:17px;letter-spacing:.04em;white-space:nowrap}.logo span{color:#8dc5e8}.mainnav{display:flex;gap:2px;height:100%;align-items:stretch}.mainnav button{background:transparent;color:#e7eef2;border:0;border-radius:0;padding:0 16px}.mainnav button.active{background:#e9edf0;color:#263b4b;border-top:3px solid #65a9d2}.account{margin-left:auto;color:#c7d6df;font-size:12px}.subnav{height:43px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 12px;gap:5px}.subnav button,.toolrow button{background:#f7f9fa;border:1px solid #c5cdd2;color:#34434c;padding:7px 12px;border-radius:3px}.subnav button.active,.toolrow button.active{background:#dcebf5;border-color:#75a9c8;color:#174f73}.subnav .right{margin-left:auto}.workspace{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:8px;padding:8px;height:calc(100vh - 95px);min-height:530px}.center{display:flex;flex-direction:column;min-width:0;background:white;border:1px solid #c5cdd2}.toolrow{height:42px;display:flex;align-items:center;padding:5px 8px;gap:5px;border-bottom:1px solid var(--line);flex-wrap:wrap}.toolrow button{padding:6px 10px;font-size:12px}.toolrow .sep{height:24px;border-left:1px solid #cbd2d7;margin:0 4px}.range-wrap{flex:1;min-height:0;position:relative;overflow:hidden;background:#9da8ae}.range{position:absolute;inset:0;overflow:hidden;background:#242b30}.range:before,.range:after{display:none}.scene3d{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0}.range{background:#343b3f}.range.scene-fallback{background-size:100% 100%;background-position:center;background-repeat:no-repeat}.range.scene-fallback .gridlines{display:none}.range-title{z-index:5}.gridlines{z-index:1}.gridlines{position:absolute;inset:0;pointer-events:none;opacity:.25;background:linear-gradient(90deg,transparent 49.8%,#fff 50%,transparent 50.2%),linear-gradient(0deg,transparent 49.8%,#fff 50%,transparent 50.2%)}.range-title{position:absolute;z-index:2;top:12px;left:14px;color:#fff;text-shadow:0 1px 3px #000;font-size:11px;letter-spacing:.12em}.target{position:absolute;z-index:4;width:66px;height:102px;transform:translate(-50%,-50%);touch-action:none;cursor:move;filter:drop-shadow(1px 3px 3px #0008)}.target svg{width:100%;height:100%}.target.selected{outline:2px solid #ffbd39;outline-offset:3px}.target .num{position:absolute;top:-17px;left:50%;transform:translateX(-50%);background:#1e526f;color:white;font-size:10px;padding:2px 5px;border-radius:2px}.target.steel{width:55px;height:55px}.target.popper{width:45px;height:80px}.target img{width:100%;height:100%}.hint{display:none;position:absolute;z-index:3;left:50%;top:48%;transform:translate(-50%,-50%);background:#ffffffd9;padding:12px 18px;border:1px solid #aebbc2;text-align:center;color:#52616a}.hint b{display:block;color:#273943;margin-bottom:4px}.bottom{height:28px;border-top:1px solid var(--line);display:flex;align-items:center;padding:0 10px;color:#66737b;font-size:11px;gap:20px}.bottom span:last-child{margin-left:auto}.side{background:#f5f7f8;border:1px solid #c5cdd2;overflow:auto}.sidehead{padding:11px 12px;background:#e7ecef;border-bottom:1px solid #c5cdd2;font-weight:bold;color:#33444e}.sidebody{padding:12px}.field{margin-bottom:11px}.field label{display:block;font-size:12px;color:#53616a;margin-bottom:4px}.field input,.field select{width:100%;padding:7px;border:1px solid #bcc7cd;background:#fff;border-radius:2px;color:#26343c}.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}.targetlist{display:flex;gap:6px;flex-wrap:wrap}.targetlist button{border:1px solid #bfcbd1;background:#fff;padding:8px;font-size:12px;min-width:80px}.targetlist button b{display:block;font-size:19px;color:#395d70}.section{font-size:11px;font-weight:bold;color:#28709b;text-transform:uppercase;letter-spacing:.08em;margin:13px 0 8px;border-bottom:1px solid #d5dce0;padding-bottom:5px}.muted{color:#78858c;font-size:11px}.hidden{display:none!important}.toast{position:fixed;bottom:15px;left:50%;transform:translateX(-50%);background:#243b4a;color:white;padding:9px 14px;border-radius:3px;z-index:20}.modal{position:fixed;inset:0;background:#0008;z-index:30;display:grid;place-items:center}.dialog{background:white;width:min(420px,92vw);padding:18px;border:1px solid #aeb9bf;box-shadow:0 8px 30px #0005}.dialog h3{margin:0 0 14px}.dialog button{padding:8px 12px;border:1px solid #bdc8ce;background:#f3f6f7}.dialog .primary{background:#286d99;color:white;border-color:#286d99}@media(max-width:760px){.top{gap:8px;padding:0 8px}.mainnav button{padding:0 8px;font-size:12px}.account{display:none}.workspace{grid-template-columns:1fr;height:auto;min-height:calc(100vh - 95px);padding:5px}.center{min-height:440px}.range-wrap{min-height:330px}.side{max-height:none}.toolrow{height:auto;min-height:42px}.subnav{overflow:auto}.subnav button{white-space:nowrap;padding:7px 9px}.sidebody{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}}
+</style></head><body>
+<header class="top"><div class="logo">VIRTUAL <span>RANGE</span></div><nav class="mainnav"><button class="active" data-main="builder">Stage Builder</button><button data-main="quick">Quickstart</button><button data-main="library">My Stages</button></nav><div class="account">LOCAL PROJECT</div></header>
+<nav class="subnav"><button class="active" data-section="stage">Stage</button><button data-section="targets">Targets</button><button id="save">Save</button><button id="share">Share</button><button class="right" id="start">▶ Start</button></nav>
+<div class="workspace"><section class="center"><div class="toolrow" id="targetTools"><button id="prev">◀</button><button id="next">▶</button><span class="sep"></span><button id="detailsToggle" class="active">Details</button><button id="add">＋ Add</button><button id="del">− Delete</button><span class="sep"></span><button id="grid" class="active">Grid</button><button id="snap" class="active">Snap to Grid</button><button id="guides">Guides</button><button id="waypoints">Waypoints</button></div><div class="range-wrap"><div class="range" id="range"><div class="range-title">STAGE PREVIEW · PROJECTOR DISPLAY</div><div class="gridlines" id="gridlines"></div><div class="hint" id="hint"><b>Stage is ready</b>Add targets from the Targets panel, then drag them into position</div></div></div><div class="bottom"><span id="count">0 targets</span><span id="selectedLabel">No target selected</span><span>Tap to select · drag to move</span></div></section>
+<aside class="side"><div class="sidehead" id="sideTitle">Stage Settings</div><div class="sidebody" id="stagePanel"><div class="field"><label>Stage name</label><input id="stageName" value="New Stage"></div><div class="field"><label>Range Background</label><select id="background"><option value="indoor">Indoor Range</option><option value="outdoor">Outdoor Range</option><option value="industrial">Industrial Bay</option><option value="winter">Winter Range</option></select></div><div class="two"><div class="field"><label>Preparation Time (sec)</label><input id="prep" type="number" min="0" value="3"></div><div class="field"><label>Target Expose Time (sec)</label><input id="expose" type="number" min="1" value="30"></div></div><label><input id="audio" type="checkbox" checked style="width:auto"> Enable audio cues</label><div class="section">Stage information</div><p class="muted">Set the range background and round timing here. Select Targets to edit the stage layout.</p></div>
+<div class="sidebody hidden" id="targetPanel"><div class="section">Add target</div><div class="targetlist"><button data-type="paper"><b>♙</b>Silhouette</button><button data-type="bull"><b>◎</b>Bullseye</button><button data-type="steel"><b>●</b>Steel plate</button><button data-type="popper"><b>♟</b>Popper</button></div><div class="section">Target Details</div><div id="noTarget" class="muted">Select a target on the stage to edit its properties.</div><div id="targetDetails" class="hidden"><div class="field"><label>Type</label><select id="type"><option value="paper">Silhouette</option><option value="bull">Bullseye</option><option value="steel">Steel plate</option><option value="popper">Steel popper</option></select></div><div class="section">Target position</div><div class="two"><div class="field"><label>Distance (yards)</label><input id="distance" type="number" min="1" value="10"></div><div class="field"><label>Sideways distance</label><input id="sideways" type="number" value="0"></div></div><div class="field"><label>Target height (feet)</label><input id="height" type="number" min="0" step=".1" value="5"></div><div class="section">Appearance</div><div class="two"><div class="field"><label>Presence (%)</label><input id="presence" type="number" min="0" max="100" value="100"></div><div class="field"><label>Delay display (sec)</label><input id="delay" type="number" min="0" value="0"></div></div><div class="field"><label>When hit</label><select id="whenHit"><option>Disappear</option><option>Stop Moving</option><option>Stop Stage</option><option>Stay Visible</option></select></div><div class="section">Movement</div><div class="field"><label>Target behavior</label><select id="movement"><option value="static">Static</option><option value="moving">Moving</option></select></div><div class="two"><div class="field"><label>Waypoint X (%)</label><input id="wayX" type="number" min="0" max="100" value="70"></div><div class="field"><label>Travel time (sec)</label><input id="wayTime" type="number" min="1" value="3"></div></div><button id="addWaypoint">＋ Add waypoint</button><div class="muted" id="waypointList" style="margin-top:8px"></div></div></div></aside></div>
+<div id="toast" class="toast hidden"></div><div id="modal" class="modal hidden"><div class="dialog"><h3 id="modalTitle">Start Stage</h3><div id="modalBody"></div><p style="display:flex;justify-content:flex-end;gap:7px;margin:16px 0 0"><button id="cancelModal">Cancel</button><button class="primary" id="confirmModal">Continue</button></p></div></div>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 <script>
-(()=>{'use strict';
-const $=id=>document.getElementById(id), cvs=$('scene'),ctx=cvs.getContext('2d'),wrap=$('sceneWrap');let targets=[],selected=-1,gridOn=false,snapOn=true,stream=null,timer=null,timerId=null,modalAction=null,drag=null;
-const toast=(text)=>{const el=$('toast');el.textContent=text;el.classList.remove('hidden');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.add('hidden'),2400)};
-function targetSvg(t){if(t.type==='steel')return '<svg viewBox="0 0 100 130"><path d="M50 72v52" stroke="#292f32" stroke-width="9"/><circle cx="50" cy="48" r="37" fill="#b7c1c5" stroke="#20272b" stroke-width="6"/><circle cx="50" cy="48" r="17" fill="none" stroke="#727d81" stroke-width="3"/></svg>';if(t.type==='popper')return '<svg viewBox="0 0 100 150"><path d="M37 8h26l-4 35 14 19-8 76H35l-8-76 14-19z" fill="#bcc5c8" stroke="#222a2e" stroke-width="5"/><path d="M50 137v10" stroke="#222" stroke-width="6"/></svg>';if(t.type==='bull')return '<svg viewBox="0 0 100 150"><path d="M35 8Q50 0 65 8L70 42Q80 50 83 68L91 143H9L17 68Q20 50 30 42Z" fill="#eee9dc" stroke="#20272b" stroke-width="3"/><circle cx="50" cy="74" r="27" fill="none" stroke="#222" stroke-width="2"/><circle cx="50" cy="74" r="16" fill="none" stroke="#222" stroke-width="2"/><circle cx="50" cy="74" r="5" fill="#a8322b"/></svg>';return '<svg viewBox="0 0 100 150"><path d="M35 8Q50 0 65 8L70 42Q80 50 83 68L91 143H9L17 68Q20 50 30 42Z" fill="#eee9dc" stroke="#20272b" stroke-width="3"/><path d="M50 48v72M22 78h56" stroke="#444" stroke-width="1.5"/><circle cx="50" cy="78" r="23" fill="none" stroke="#333" stroke-width="1.5"/><circle cx="50" cy="78" r="12" fill="none" stroke="#333" stroke-width="1.5"/></svg>'}
-function drawScene(){const w=wrap.clientWidth,h=wrap.clientHeight,dpr=Math.min(devicePixelRatio||1,1.5);if(!w||!h)return;if(cvs.width!==Math.round(w*dpr)||cvs.height!==Math.round(h*dpr)){cvs.width=Math.round(w*dpr);cvs.height=Math.round(h*dpr);cvs.style.width=w+'px';cvs.style.height=h+'px'}ctx.setTransform(dpr,0,0,dpr,0,0);const kind=$('background').value;const sky=kind==='winter'?'#617985':kind==='outdoor'?'#657d82':kind==='industrial'?'#30383c':'#424b4d';const floor=kind==='winter'?'#828e90':kind==='outdoor'?'#786e5b':kind==='industrial'?'#494743':'#68665e';ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);ctx.fillStyle='#353d40';ctx.beginPath();ctx.moveTo(w*.14,0);ctx.lineTo(w*.86,0);ctx.lineTo(w*.69,h*.55);ctx.lineTo(w*.31,h*.55);ctx.closePath();ctx.fill();ctx.fillStyle=kind==='winter'?'#818d92':'#525959';ctx.fillRect(w*.31,h*.53,w*.38,h*.16);ctx.fillStyle=floor;ctx.beginPath();ctx.moveTo(0,h);ctx.lineTo(w*.31,h*.53);ctx.lineTo(w*.69,h*.53);ctx.lineTo(w,h);ctx.closePath();ctx.fill();ctx.strokeStyle='#a5a293';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(w*.31,h*.53);ctx.lineTo(w*.69,h*.53);ctx.stroke();ctx.strokeStyle='#bbb28f55';ctx.lineWidth=1;for(let i=0;i<5;i++){const x=w*(.15+i*.175);ctx.beginPath();ctx.moveTo(w*.5,h*.57);ctx.lineTo(x,h);ctx.stroke()}ctx.strokeStyle='#b88f5c55';ctx.lineWidth=4;for(let i=0;i<4;i++){const x=w*(.08+i*.28);ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(w*.5+(x-w*.5)*.62,h*.51);ctx.stroke()}ctx.fillStyle='#20272a';ctx.fillRect(w*.34,h*.49,w*.32,h*.05);ctx.fillStyle='#d5ccad';for(let i=1;i<=5;i++){ctx.fillRect(w*.12,h*(.18+i*.105),w*.76,1)}}
-function render(){document.querySelectorAll('.target').forEach(e=>e.remove());targets.forEach((t,i)=>{const el=document.createElement('div');el.className='target'+(i===selected?' selected':'');el.style.left=t.x+'%';el.style.top=t.y+'%';el.style.width=t.type==='steel'?'42px':t.type==='popper'?'37px':'48px';el.style.height=t.type==='steel'?'55px':t.type==='popper'?'64px':'73px';el.innerHTML=targetSvg(t)+`<span class="tag">${i+1}</span>`;el.addEventListener('pointerdown',ev=>{ev.preventDefault();ev.stopPropagation();selected=i;render();drag={index:i};el.setPointerCapture?.(ev.pointerId)});el.addEventListener('pointermove',ev=>{if(!drag||drag.index!==i)return;const r=wrap.getBoundingClientRect();let x=(ev.clientX-r.left)/r.width*100,y=(ev.clientY-r.top)/r.height*100;if(snapOn){x=Math.round(x/2)*2;y=Math.round(y/2)*2}t.x=Math.max(2,Math.min(98,x));t.y=Math.max(8,Math.min(92,y));el.style.left=t.x+'%';el.style.top=t.y+'%'});el.addEventListener('pointerup',()=>{drag=null;sync()});$('targets').appendChild(el)});$('targetCount').textContent=targets.length+' target'+(targets.length===1?'':'s');$('grid').classList.toggle('hidden',!gridOn);sync()}
-function sync(){const t=targets[selected];$('selectedLabel').textContent=t?`Target ${selected+1} selected`:'No target selected';$('noTarget').classList.toggle('hidden',!!t);$('details').classList.toggle('hidden',!t);if(!t)return;$('targetType').value=t.type;$('distance').value=t.distance;$('height').value=t.height;$('presence').value=t.presence;$('delay').value=t.delay;$('movement').value=t.movement}
-function addTarget(type='paper'){targets.push({type,x:36+(targets.length%5)*7,y:47,distance:10,height:5,presence:100,delay:0,movement:'static'});selected=targets.length-1;render();$('stagePanel').classList.add('hidden');$('targetPanel').classList.remove('hidden');$('sideTitle').textContent='Target Editor'}
-function save(){const data=stageData();localStorage.setItem('vr-stage-v1',JSON.stringify(data));toast('Stage saved on this device')}
-function stageData(){return {version:1,name:$('stageName').value,background:$('background').value,prep:+$('prep').value,expose:+$('expose').value,audio:$('audio').checked,targets}}
-function load(data){if(!data||!Array.isArray(data.targets))throw Error('Invalid stage file');$('stageName').value=String(data.name||'Imported Stage').slice(0,60);$('background').value=['indoor','outdoor','industrial','winter'].includes(data.background)?data.background:'indoor';$('prep').value=Math.max(0,+data.prep||3);$('expose').value=Math.max(1,+data.expose||30);$('audio').checked=data.audio!==false;targets=data.targets.map(t=>({type:['paper','bull','steel','popper'].includes(t.type)?t.type:'paper',x:Math.max(1,Math.min(99,+t.x||50)),y:Math.max(5,Math.min(95,+t.y||50)),distance:+t.distance||10,height:+t.height||5,presence:+t.presence||100,delay:+t.delay||0,movement:t.movement==='moving'?'moving':'static'}));selected=targets.length?0:-1;drawScene();render()}
-function showModal(title,body,action){$('modalTitle').textContent=title;$('modalBody').innerHTML=body;$('modal').classList.remove('hidden');modalAction=action}
-function closeModal(){ $('modal').classList.add('hidden');modalAction=null }
-function startStage(){if(timerId)clearInterval(timerId);closeModal();const prep=Math.max(0,+$('prep').value||0),duration=Math.max(1,+$('expose').value||30);let remaining=prep;const begin=()=>{remaining=duration;$('stageStatus').textContent='ROUND LIVE · SHOTS NOT TRACKED';$('fpsLabel').textContent='LIVE';timerId=setInterval(()=>{remaining--;if(remaining<=0){clearInterval(timerId);timerId=null;$('stageStatus').textContent='ROUND COMPLETE · NO SCORE';$('fpsLabel').textContent='DONE';toast('Round complete · camera scoring is not enabled')}else $('fpsLabel').textContent=remaining+'s'},1000)};$('stageStatus').textContent=prep?'PREPARATION · '+prep+'s':'ROUND LIVE · SHOTS NOT TRACKED';if(prep){timerId=setInterval(()=>{remaining--;if(remaining<=0){clearInterval(timerId);timerId=null;begin()}else $('stageStatus').textContent='PREPARATION · '+remaining+'s'},1000)}else begin()}
-async function cameraTest(){if(!navigator.mediaDevices?.getUserMedia){toast('Camera API unavailable. Use HTTPS in Safari.');return}try{if(stream)stopCamera();stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:720}},audio:false});$('video').srcObject=stream;$('cameraBox').classList.add('show');$('cameraStatus').classList.add('on');$('cameraBtn').textContent='Camera active';toast('Camera preview active · no shot detection')}catch(e){toast(e.name==='NotAllowedError'?'Camera permission denied':`Camera unavailable: ${e.name||'error'}`)}}
-function stopCamera(){if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;$('video').srcObject=null;$('cameraBox').classList.remove('show');$('cameraStatus').classList.remove('on');$('cameraBtn').textContent='Camera test'}
-function calibrate(){if(!stream){toast('Start Camera test first');return}showModal('Calibration feasibility test','<p class="muted">This version does not capture calibration points or map hits. For the hardware test, confirm that the camera can see all four corners of the projected image while the page is mirrored.</p><video id="calVideo" autoplay playsinline muted></video><p class="muted">If this preview is visible and stable, camera permission is working. It does not establish reliable laser detection or projector compatibility.</p>',null);$('calVideo').srcObject=stream}
-$('add').onclick=()=>addTarget();$('delete').onclick=()=>{if(selected<0)return;targets.splice(selected,1);selected=Math.min(selected,targets.length-1);render()};$('prev').onclick=()=>{if(targets.length){selected=(selected-1+targets.length)%targets.length;render()}};$('next').onclick=()=>{if(targets.length){selected=(selected+1)%targets.length;render()}};document.querySelectorAll('[data-type]').forEach(b=>b.onclick=()=>addTarget(b.dataset.type));$('gridBtn').onclick=()=>{gridOn=!gridOn;$('gridBtn').classList.toggle('active',gridOn);render()};$('snapBtn').onclick=()=>{snapOn=!snapOn;$('snapBtn').classList.toggle('active',snapOn)};$('background').onchange=()=>{drawScene();$('sceneLabel').textContent=$('background').selectedOptions[0].text.toUpperCase()+' · PREVIEW'};['targetType','distance','height','presence','delay','movement'].forEach(id=>$(id).onchange=()=>{const t=targets[selected];if(!t)return;const k=id==='targetType'?'type':id;t[k]=['distance','height','presence','delay'].includes(k)?+$(id).value:$(id).value;render()});$('saveBtn').onclick=save;$('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify(stageData(),null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(($('stageName').value||'stage').replace(/[^a-z0-9-_]+/gi,'-'))+'.json';a.click();URL.revokeObjectURL(a.href)};$('myStages').onclick=()=>{const f=$('importFile');f.click()};$('importFile').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{load(JSON.parse(await file.text()));toast('Stage imported')}catch{toast('Could not read that stage file')}e.target.value=''};$('quickstart').onclick=()=>showModal('Quickstart','<ol class="muted"><li>Add targets and drag them into place.</li><li>Save locally or export a stage JSON file.</li><li>Camera test checks permission and preview only.</li><li>Start runs a visual timer; hit detection and scoring are not implemented.</li></ol>',null);$('cameraBtn').onclick=cameraTest;$('stopCameraBtn').onclick=stopCamera;$('calibrateBtn').onclick=calibrate;$('startBtn').onclick=()=>{const p=+$('prep').value||0,t=+$('expose').value||30;showModal('Start visual round',`<p>Preparation: ${p} sec</p><p>Round time: ${t} sec</p><p class="notice">This is a visual timer only. Camera-based hit detection, scoring, and moving-target animation are not enabled.</p>`,startStage)};$('cancel').onclick=closeModal;$('confirm').onclick=()=>{if(modalAction)modalAction();else closeModal()};$('modal').addEventListener('click',e=>{if(e.target===$('modal'))closeModal()});window.addEventListener('resize',drawScene);document.addEventListener('visibilitychange',()=>{if(document.hidden&&stream)toast('Camera processing should be treated as interrupted when Safari is backgrounded')});if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});try{const old=JSON.parse(localStorage.getItem('vr-stage-v1')||'null');if(old)load(old)}catch{}drawScene();render();
+(() => {
+ const host = document.getElementById('range');
+ const fallback = () => {
+   host.classList.add('scene-fallback');
+   host.style.backgroundImage = 'url("data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620"><defs><linearGradient id="wall" x2="0" y2="1"><stop stop-color="#5e6669"/><stop offset="1" stop-color="#252d31"/></linearGradient><linearGradient id="floor" x2="0" y2="1"><stop stop-color="#77766d"/><stop offset="1" stop-color="#292d2e"/></linearGradient><linearGradient id="side"><stop stop-color="#252c30"/><stop offset="1" stop-color="#596165"/></linearGradient><radialGradient id="glow"><stop stop-color="#ffe0ad" stop-opacity=".8"/><stop offset="1" stop-color="#ffe0ad" stop-opacity="0"/></radialGradient></defs><rect width="1200" height="620" fill="#252c30"/><path d="M0 0H1200L1040 330H160Z" fill="#3c4549"/><path d="M0 0L160 330V620H0Z" fill="url(#side)"/><path d="M1200 0L1040 330V620H1200Z" fill="url(#side)"/><path d="M160 330H1040V620H160Z" fill="url(#wall)"/><path d="M0 620L160 330H1040L1200 620Z" fill="url(#floor)"/><path d="M160 330L1040 330" stroke="#a7a49a" stroke-width="8"/><g stroke="#8b433b" stroke-width="22"><path d="M60 30L300 310M360 0L470 310M840 0L730 310M1140 30L900 310"/></g><g fill="#f5d8a5" opacity=".9"><path d="M250 80h150l-20 20H270z"/><path d="M800 80h150l-20 20H820z"/></g><ellipse cx="600" cy="350" rx="400" ry="160" fill="url(#glow)"/><g stroke="#262c2e" stroke-width="10" fill="#c8c9c5"><path d="M320 430v-140h-18v-25h50v25h-18v140z"/><path d="M580 450v-165h-20v-28h60v28h-20v165z"/><path d="M850 430v-140h-18v-25h50v25h-18v140z"/></g><g fill="#d5d7d4" stroke="#30383b" stroke-width="8"><path d="M300 260l8-35 55 0 8 35-10 80h-52z"/><path d="M560 250l10-40h60l10 40-12 100h-56z"/><path d="M830 260l8-35h55l8 35-10 80h-52z"/></g><g fill="#b43c32"><circle cx="336" cy="280" r="11"/><circle cx="600" cy="275" r="12"/><circle cx="865" cy="280" r="11"/></g><g stroke="#b6b4aa" stroke-width="3" opacity=".45"><path d="M600 350L0 620M600 350L1200 620M600 350V620"/></g></svg>`) + '")';
+ };
+ if(!window.THREE){ fallback(); return; }
+ try {
+   const T = window.THREE;
+   const scene = new T.Scene();
+   scene.background = new T.Color(0x343b3f);
+   scene.fog = new T.Fog(0x343b3f, 24, 58);
+   const camera = new T.PerspectiveCamera(52, 1, .1, 100);
+   camera.position.set(0, 3.45, 11.8);
+   camera.lookAt(0, 2.45, -8.5);
+   const renderer = new T.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'low-power' });
+   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5));
+   renderer.shadowMap.enabled = true;
+   renderer.shadowMap.type = T.PCFSoftShadowMap;
+   renderer.outputColorSpace = T.SRGBColorSpace;
+   renderer.toneMapping = T.ACESFilmicToneMapping;
+   renderer.toneMappingExposure = 1.2;
+   renderer.domElement.className = 'scene3d';
+   host.prepend(renderer.domElement);
+   scene.add(new T.HemisphereLight(0xdce8ef, 0x292521, 2.15));
+   const key = new T.DirectionalLight(0xffdcb0, 3.1);
+   key.position.set(-5, 10, 6);
+   key.castShadow = true;
+   key.shadow.mapSize.set(1024, 1024);
+   scene.add(key);
+   const mat = (c, r = .85, m = 0) => new T.MeshStandardMaterial({ color: c, roughness: r, metalness: m });
+   const concrete = mat(0x777a78), dark = mat(0x272e32), floor = mat(0x68645c), red = mat(0x873d35, .6, .2), steel = mat(0x929a9d, .36, .7), black = mat(0x171b1e), warm = mat(0xffd9a1, .35, 0);
+   const add = (g, m, x, y, z, rx = 0, ry = 0, rz = 0, parent = scene) => {
+     const o = new T.Mesh(g, m);
+     o.position.set(x, y, z);
+     o.rotation.set(rx, ry, rz);
+     o.castShadow = true;
+     o.receiveShadow = true;
+     parent.add(o);
+     return o;
+   };
+   const box = (w, h, d, m, x, y, z) => add(new T.BoxGeometry(w, h, d), m, x, y, z);
+   box(20, .25, 42, floor, 0, -.16, -8);
+   box(20, 8, .45, concrete, 0, 4, -29);
+   box(.45, 8, 42, concrete, -10, 4, -8);
+   box(.45, 8, 42, concrete, 10, 4, -8);
+   box(20, .35, 42, dark, 0, 8, -8);
+   const seam = mat(0x42494b, .9);
+   for (let x = -9; x <= 9; x += 2) {
+     box(.035, 7.7, .025, seam, x, 4, -28.75);
+     box(.025, 7.7, 40, seam, x, 4, -8);
+   }
+   for (let y = 1; y < 8; y += 1.65) box(19.8, .035, .03, seam, 0, y, -28.73);
+   for (let z = 8; z >= -27; z -= 5.2) {
+     box(20, .2, .34, red, 0, 7.55, z);
+     box(.22, .85, .3, red, -8.8, 7.05, z);
+     box(.22, .85, .3, red, 8.8, 7.05, z);
+   }
+   for (let z = 5; z > -26; z -= 6.5) {
+     box(2.6, .09, .65, warm, 0, 7.28, z);
+     const lamp = new T.PointLight(0xffd49b, 24, 16);
+     lamp.position.set(0, 6.8, z);
+     scene.add(lamp);
+   }
+   box(17, 2.7, .7, black, 0, 1.35, -22.8);
+   for (let x = -8; x <= 8; x += 1.4) box(.045, 2.5, .03, seam, x, 1.35, -22.4);
+   const line = mat(0xd1b986, .75);
+   for (let z = 7; z >= -17; z -= 3.2) box(19, .025, .055, line, 0, .012, z);
+   for (let x = -8; x <= 8; x += 4) box(.12, 1.25, 10, steel, x, .62, -9);
+   const props = new T.Group();
+   scene.add(props);
+   function plate(x, z, s = 0.72) {
+     const pole = add(new T.CylinderGeometry(.045, .06, 1.2, 10), mat(0x514735), x, .62, z, 0, 0, 0, props);
+     const base = add(new T.BoxGeometry(.78, .12, .48), black, x, .08, z, 0, 0, 0, props);
+     const p = add(new T.CylinderGeometry(s, s, .11, 8), steel, x, 1.55, z, Math.PI / 2, 0, 0, props);
+     p.rotation.z = Math.PI / 8;
+   }
+   function silhouette(x, z, scale = 1) {
+     const group = new T.Group();
+     group.position.set(x, 0, z);
+     group.scale.setScalar(scale);
+     props.add(group);
+     const sh = new T.Shape();
+     sh.moveTo(-.34, .15);
+     sh.lineTo(-.48, 1.55);
+     sh.quadraticCurveTo(-.48, 1.82, -.28, 1.92);
+     sh.lineTo(-.20, 2.35);
+     sh.quadraticCurveTo(0, 2.52, .20, 2.35);
+     sh.lineTo(.28, 1.92);
+     sh.quadraticCurveTo(.48, 1.82, .48, 1.55);
+     sh.lineTo(.34, .15);
+     sh.lineTo(.13, .15);
+     sh.lineTo(.09, .78);
+     sh.lineTo(-.09, .78);
+     sh.lineTo(-.13, .15);
+     sh.closePath();
+     const paper = mat(0xe5e1d5, .95);
+     const shape = new T.Mesh(new T.ExtrudeGeometry(sh, { depth: .055, bevelEnabled: true, bevelThickness: .018, bevelSize: .018, bevelSegments: 1 }), paper);
+     shape.position.y = .2;
+     shape.castShadow = true;
+     group.add(shape);
+     const ring = add(new T.TorusGeometry(.17, .018, 8, 32), mat(0x9d3b32), 0, 1.75, .09, 0, 0, 0, group);
+     const chest = add(new T.TorusGeometry(.29, .012, 6, 32), mat(0x77736a), 0, 1.75, .085, 0, 0, 0, group);
+     add(new T.CylinderGeometry(.035, .045, 1.3, 8), mat(0x514735), 0, .68, -.05, 0, 0, 0, group);
+     add(new T.BoxGeometry(1.25, .12, .5), black, 0, .08, .12, 0, 0, 0, group);
+   }
+   [-5.5, 0, 5.5].forEach((x, i) => { if (i === 1) silhouette(x, -14.5, .95); else plate(x, -14.5, .85);});
+   [-7.5, 7.5].forEach(x => plate(x, -18, .62));
+   const barrelMat = mat(0x666b68, .5, .35);
+   for (const x of [-8.1, 8.1]) {
+     add(new T.CylinderGeometry(.55, .55, 1.45, 24), barrelMat, x, .73, -12);
+     for (let y = .25; y < 1.4; y += .45) add(new T.TorusGeometry(.55, .045, 8, 24), steel, x, y, -12, Math.PI / 2);
+   }
+   function setScene(kind) {
+     scene.background.set(kind === 'winter' ? 0x91a9b8 : kind === 'outdoor' ? 0x8298a3 : kind === 'industrial' ? 0x30383c : 0x343b3f);
+     scene.fog.color.copy(scene.background);
+     floor.color.set(kind === 'winter' ? 0xb9c7cc : kind === 'outdoor' ? 0x9a8668 : kind === 'industrial' ? 0x454341 : 0x68645c);
+     concrete.color.set(kind === 'winter' ? 0x8e9ca3 : kind === 'industrial' ? 0x555b5e : 0x777a78);
+     red.color.set(kind === 'winter' ? 0x596d7b : kind === 'industrial' ? 0x303538 : 0x873d35);
+     props.visible = kind !== 'outdoor' || true;
+   }
+   window.vrSetScene = setScene;
+   function resize() {
+     const w = host.clientWidth;
+     const h = host.clientHeight;
+     if (!w || !h) return;
+     renderer.setSize(w, h, false);
+     camera.aspect = w / h;
+     camera.updateProjectionMatrix();
+   }
+   const ro = new ResizeObserver(resize);
+   ro.observe(host);
+   resize();
+   setScene(document.getElementById('background')?.value || 'indoor');
+   let raf;
+   function animate() { raf = requestAnimationFrame(animate); renderer.render(scene, camera); }
+   animate();
+ } catch (err) {
+   console.error('3D scene initialization failed', err);
+   fallback();
+ }
 })();
 </script>
-</body>
-</html>
+<script>
+(() => {
+ const $ = id => document.getElementById(id), range = $('range');
+ let targets = [], selected = -1, gridOn = false, snapOn = true, guidesOn = false, waypointsOn = true, modalAction = null;
+ const toast = s => {
+   $('toast').textContent = s;
+   $('toast').classList.remove('hidden');
+   setTimeout(() => $('toast').classList.add('hidden'), 1800);
+ };
+ const cur = () => targets[selected];
+ function svg(t) {
+   if (t.type === 'steel') return '<svg viewBox="0 0 100 100"><circle cx="50" cy="43" r="35" fill="#cbd1d4" stroke="#333d43" stroke-width="4"/><path d="M50 78v18" stroke="#333" stroke-width="7"/></svg>';
+   if (t.type === 'popper') return '<svg viewBox="0 0 100 150"><path d="M35 8h30l-3 38 13 20-7 70H32l-7-70 13-20z" fill="#cbd1d4" stroke="#333d43" stroke-width="4"/><path d="M50 136v12" stroke="#333" stroke-width="6"/></svg>';
+   return `<svg viewBox="0 0 100 150"><path d="M35 8Q50 0 65 8L70 42Q80 50 83 68L91 143H9L17 68Q20 50 30 42Z" fill="#f4f1e8" stroke="#20272b" stroke-width="2"/><path d="M50 45v65M25 78h50" stroke="#333" stroke-width="1.4"/><circle cx="50" cy="75" r="22" fill="none" stroke="#333" stroke-width="1.3"/><circle cx="50" cy="75" r="12" fill="none" stroke="#333" stroke-width="1.3"/><circle cx="50" cy="75" r="3" fill="#222"/></svg>`;
+ }
+ function render() {
+   range.querySelectorAll('.target').forEach(e => e.remove());
+   targets.forEach((t, i) => {
+     const e = document.createElement('div');
+     e.className = 'target ' + t.type + (i === selected ? ' selected' : '');
+     e.style.left = t.x + '%';
+     e.style.top = t.y + '%';
+     e.style.width = (t.type === 'steel' ? 56 : t.type === 'popper' ? 46 : 68) + 'px';
+     e.style.height = (t.type === 'steel' ? 56 : t.type === 'popper' ? 82 : 104) + 'px';
+     e.innerHTML = svg(t) + `<span class="num">${i + 1}</span>`;
+     e.addEventListener('pointerdown', ev => {
+       ev.preventDefault();
+       selected = i;
+       render();
+       const r = range.getBoundingClientRect();
+       const move = m => {
+         let x = (m.clientX - r.left) / r.width * 100;
+         let y = (m.clientY - r.top) / r.height * 100;
+         if (snapOn) { x = Math.round(x / 2) * 2; y = Math.round(y / 2) * 2; }
+         t.x = Math.max(1, Math.min(99, x));
+         t.y = Math.max(5, Math.min(95, y));
+         e.style.left = t.x + '%';
+         e.style.top = t.y + '%';
+         sync();
+       };
+       const up = () => {
+         window.removeEventListener('pointermove', move);
+         window.removeEventListener('pointerup', up);
+       };
+       window.addEventListener('pointermove', move);
+       window.addEventListener('pointerup', up);
+     });
+     range.appendChild(e);
+   });
+   $('hint').classList.toggle('hidden', targets.length > 0);
+   $('gridlines').classList.toggle('hidden', !gridOn);
+   $('count').textContent = targets.length + ' targets';
+   sync();
+ }
+ function sync() {
+   const t = cur();
+   $('noTarget').classList.toggle('hidden', !!t);
+   $('targetDetails').classList.toggle('hidden', !t);
+   $('selectedLabel').textContent = t ? 'Target ' + (selected + 1) + ' selected' : 'No target selected';
+   if (!t) return;
+   ['type', 'distance', 'sideways', 'height', 'presence', 'delay', 'whenHit', 'movement'].forEach(k => $(k).value = t[k]);
+   $('waypointList').textContent = t.waypoints.length ? 'Waypoints: ' + t.waypoints.map((w, i) => `${i + 1}: ${w.x}% / ${w.time}s`).join(' · ') : 'No waypoints added.';
+ }
+ function add(type = 'paper') {
+   targets.push({
+     type,
+     x: 35 + (targets.length % 4) * 10,
+     y: 46,
+     distance: 10,
+     sideways: 0,
+     height: 5,
+     presence: 100,
+     delay: 0,
+     whenHit: 'Disappear',
+     movement: 'static',
+     waypoints: []
+   });
+   selected = targets.length - 1;
+   render();
+ }
+ document.querySelectorAll('[data-type]').forEach(b => b.onclick = () => add(b.dataset.type));
+ $('add').onclick = () => add();
+ $('del').onclick = () => {
+   if (selected < 0) return;
+   targets.splice(selected, 1);
+   selected = Math.min(selected, targets.length - 1);
+   render();
+ };
+ $('prev').onclick = () => {
+   if (targets.length) {
+     selected = (selected - 1 + targets.length) % targets.length;
+     render();
+   }
+ };
+ $('next').onclick = () => {
+   if (targets.length) {
+     selected = (selected + 1) % targets.length;
+     render();
+   }
+ };
+ $('detailsToggle').onclick = () => {
+   $('targetPanel').classList.toggle('hidden');
+   $('stagePanel').classList.add('hidden');
+   document.querySelector('[data-section="targets"]').classList.add('active');
+   document.querySelector('[data-section="stage"]').classList.remove('active');
+ };
+ $('grid').onclick = () => {
+   gridOn = !gridOn;
+   $('grid').classList.toggle('active', gridOn);
+   render();
+ };
+ $('snap').onclick = () => {
+   snapOn = !snapOn;
+   $('snap').classList.toggle('active', snapOn);
+ };
+ $('guides').onclick = () => {
+   guidesOn = !guidesOn;
+   $('guides').classList.toggle('active', guidesOn);
+   toast(guidesOn ? 'Guides enabled' : 'Guides hidden');
+ };
+ $('waypoints').onclick = () => {
+   waypointsOn = !waypointsOn;
+   $('waypoints').classList.toggle('active', waypointsOn);
+   toast(waypointsOn ? 'Waypoints shown' : 'Waypoints hidden');
+ };
+ $('addWaypoint').onclick = () => {
+   const t = cur();
+   if (!t) return;
+   t.waypoints.push({ x: +$('wayX').value, time: +$('wayTime').value });
+   sync();
+ };
+ ['type', 'distance', 'sideways', 'height', 'presence', 'delay', 'whenHit', 'movement'].forEach(k => $(k).onchange = () => {
+   const t = cur();
+   if (!t) return;
+   t[k] = ['distance', 'sideways', 'height', 'presence', 'delay'].includes(k) ? +$(k).value : $(k).value;
+   render();
+ });
+ document.querySelectorAll('[data-section]').forEach(b => {
+   b.onclick = () => {
+     const stage = b.dataset.section === 'stage';
+     $('stagePanel').classList.toggle('hidden', !stage);
+     $('targetPanel').classList.toggle('hidden', stage);
+     document.querySelectorAll('[data-section]').forEach(x => x.classList.toggle('active', x === b));
+     $('sideTitle').textContent = stage ? 'Stage Settings' : 'Target Editor';
+   };
+ });
+ $('background').onchange = e => { if (window.vrSetScene) window.vrSetScene(e.target.value); };
+ function showModal(title, body, action) {
+   $('modalTitle').textContent = title;
+   $('modalBody').innerHTML = body;
+   $('modal').classList.remove('hidden');
+   modalAction = action;
+ }
+ $('cancelModal').onclick = () => $('modal').classList.add('hidden');
+ $('confirmModal').onclick = () => {
+   if (modalAction) modalAction();
+   $('modal').classList.add('hidden');
+ };
+ $('start').onclick = () => showModal('Start Stage', '<p>Preparation: ' + $('prep').value + ' seconds</p><p>Target exposure: ' + $('expose').value + ' seconds</p><p class="muted">Training screen preview. Camera-based laser detection is not yet connected.</p>', () => { toast('Stage preview ready'); });
+ $('save').onclick = () => {
+   const data = { name: $('stageName').value, background: $('background').value, prep: $('prep').value, expose: $('expose').value, targets };
+   localStorage.setItem('vr-stage', JSON.stringify(data));
+   toast('Stage saved on this device');
+ };
+ $('share').onclick = () => showModal('Share stage', '<p>Stage sharing will export a local stage file in a later iteration. Your stage remains saved on this device.</p>', () => toast('Stage saved locally'));
+ document.querySelectorAll('[data-main]').forEach(b => {
+   b.onclick = () => {
+     document.querySelectorAll('[data-main]').forEach(x => x.classList.toggle('active', x === b));
+     if (b.dataset.main !== 'builder') toast(b.textContent + ' view is not implemented yet');
+   };
+ });
+ let saved;
+ try { saved = JSON.parse(localStorage.getItem('vr-stage') || 'null'); } catch (e) {}
+ if (saved) {
+   $('stageName').value = saved.name || 'New Stage';
+   $('background').value = saved.background || 'indoor';
+   $('prep').value = saved.prep || 3;
+   $('expose').value = saved.expose || 30;
+   targets = saved.targets || [];
+ }
+ render();
+})();
+</script></body></html>
